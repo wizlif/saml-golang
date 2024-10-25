@@ -1,0 +1,6 @@
+saml:
+  entry_point: "https://mocksaml.com/api/saml/sso"
+  entity_id: "https://saml.example.com/entityid"
+  certificate_path: "./cert.pem"
+  callback_url: "http://localhost:8080/saml/callback"
+  admin_panel_base_url: "http://localhost:8080/admin"
