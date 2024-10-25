@@ -73,7 +73,6 @@ func NewGoogleSamlService(config GoogleSamlServiceOptions) (*GoogleSamlService, 
 		AssertionConsumerServiceURL: config.CallbackURL,
 		SignAuthnRequests:           false,
 		IDPCertificateStore:         &certStore,
-		// AllowIDPInitiated:             true,
 	}
 
 	return &GoogleSamlService{

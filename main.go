@@ -88,18 +88,6 @@ func main() {
 
 	// Define the callback endpoint
 	r.POST("/saml/callback", func(c *gin.Context) {
-		// // Read the raw body
-		// bod, err := c.GetRawData()
-		// if err != nil {
-		// 	c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to read request body"})
-		// 	return
-		// }
-
-		// // Log the body for debugging
-		// fmt.Println("Request Body:", string(bod))
-
-		fmt.Println("Content-Type:", c.GetHeader("Content-Type"))
-
 		var form GoogleSamlCallbackResponse
 
 		if err := c.ShouldBind(&form); err != nil {
@@ -110,11 +98,11 @@ func main() {
 
 		profile, err := samlService.ValidateCallback(context.Background(), form)
 		if err != nil {
-			// if err == saml2.ErrForbidden {
-			// 	c.JSON(http.StatusForbidden, gin.H{"error": "You've been logged out"})
-			// } else {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "SAML validation failed"})
-			// }
+			if err == ErrForbidden {
+				c.JSON(http.StatusForbidden, gin.H{"error": "You've been logged out"})
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "SAML validation failed"})
+			}
 			return
 		}
 
